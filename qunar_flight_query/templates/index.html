@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<head>
+  <title>Super Tool Box</title>
+  <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/css/bootstrap-combined.min.css" rel="stylesheet">
+  <style type='text/css'>
+    body {
+      background-color: #CCC;
+    }
+    #content {
+      background-color: #FFF;
+      border-radius: 5px;
+    }
+    #content .main {
+      padding: 20px;
+    }
+    #content .sidebar {
+      padding: 10px;
+    }
+    #content p {
+      line-height: 30px;
+    }
+  </style>
+</head>
+<body>
+<div class='container'>
+  <h1>Super Tool Box</h1>
+  <div class='navbar navbar-inverse'>
+    <div class='navbar-inner nav-collapse' style="height: auto;">
+      <ul class="nav">
+        <li><a href="#">机票雷达</a></li>
+        <li><a href="#">Page One</a></li>
+        <li><a href="#">Page Two</a></li>
+      </ul>
+    </div>
+  </div>
+  <div id='content' class='row-fluid'>
+    <div class='span9 main'>
+      <h2>机票雷达</h2>
+        <form class="form-horizontal" action="/flight_query/" method="get">
+          <div class="control-group">
+            <label class="control-label" for="inputLeaveCity">起飞城市:</label>
+             <div class="controls">
+              <input type="text" id="c1" name="c1" placeholder="北京">
+             </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="inputArriveCity">到达城市:</label>
+             <div class="controls">
+              <input type="text" id="c2" name="c2" placeholder="广州">
+             </div>
+          </div>
+          <div class="control-group">
+             <label class="control-label" for="inputLeaveTime">起飞时间:</label>
+             <div class="controls">
+              <input type="text" id="date" name="date" placeholder="格式：2015-09-10">（选填，填入后只返回当天最低票价）
+             </div>
+          </div>
+          <div class="control-group">
+             <div class="controls">
+                <button type="button" id='sum' class="btn">提交</button> <br>
+             </div>
+          </div>
+                    
+          <table id='result' class="table table-striped"></table>
+        </form>  
+    </div>
+    <div class='span3 sidebar'>
+      <h2>Sidebar</h2>
+      <ul class="nav nav-tabs nav-stacked">
+        <li><a href='#'>Another Link 1</a></li>
+        <li><a href='#'>Another Link 2</a></li>
+        <li><a href='#'>Another Link 3</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script src="/static/js/Chart.Line.js"></script>
+
+<script>
+    $(document).ready(function(){
+        //$("#date").datepicker();
+
+        $("#sum").click(function(){
+            var c1 = $("#c1").val();
+            var c2 = $("#c2").val();
+            var date = $("#date").val();
+            
+            if (c1 == ""){
+                alert("请输入起飞城市!")
+                return;
+            }
+    
+            if (c2 == ""){
+                alert("请输入到达城市!")
+                return;
+            }
+        
+            /*if (date == ""){
+                alert("请输入出发时间!")
+                return;
+            }
+            
+            var re = /^(201[0-9]|202[0-9]|203[0-9])\-(0[1-9]|1[0-2])\-(0[1-9]|1[0-9]|2[0-9]|3[0-1])$/;
+            if(!re.test(date)){
+                alert("您输入的起飞时间格式不正确")
+                return false;
+            }*/
+            if (date =="") {
+                date = "0"
+            }else{
+                var re = /^(201[0-9]|202[0-9]|203[0-9])\-(0[1-9]|1[0-2])\-(0[1-9]|1[0-9]|2[0-9]|3[0-1])$/;
+                if(!re.test(date)){
+                    alert("您输入的起飞时间格式不正确")
+                    return false;
+                }    
+            }
+    
+            $.get("/flight_query/",{'c1':c1,'c2':c2,'date':date}, function(ret){
+                $('#result').html(ret);
+        })
+      });
+    });
+</script>
+</body>
+</html>	
