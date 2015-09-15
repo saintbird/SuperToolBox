@@ -1,65 +1,48 @@
-<!DOCTYPE html>
-<head>
-  <title>Super Tool Box</title>
-  <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/css/bootstrap-combined.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/static/css/main.css" type="text/css" />
-</head>
-<body>
-<div class='container'>
-  <h1>Super Tool Box</h1>
-  <div class='navbar navbar-inverse'>
-    <div class='navbar-inner nav-collapse' style="height: auto;">
-      <ul class="nav">
-        <li><a href="#">机票雷达</a></li>
-        <li><a href="#">Page One</a></li>
-        <li><a href="#">Page Two</a></li>
-      </ul>
-    </div>
+{% extends 'base.html' %}
+
+{% block title %}机票雷达{% endblock %}
+
+{% block content %}
+<div id='content' class='row-fluid'>
+  <div class='span9 main'>
+    <h2>机票雷达</h2>
+    <form class="form-horizontal" action="/flight_query/" method="get">
+      <div class="control-group">
+        <label class="control-label" for="inputLeaveCity">起飞城市:</label>
+         <div class="controls">
+          <input type="text" id="c1" name="c1" placeholder="北京">
+         </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="inputArriveCity">到达城市:</label>
+         <div class="controls">
+          <input type="text" id="c2" name="c2" placeholder="广州">
+         </div>
+      </div>
+      <div class="control-group">
+         <label class="control-label" for="inputLeaveTime">起飞时间:</label>
+         <div class="controls">
+          <input type="text" id="date" name="date" placeholder="格式：2015-09-10">（选填，填入后只返回当天最低票价）
+         </div>
+      </div>
+      <div class="control-group">
+         <div class="controls">
+            <button type="button" id='sum' class="btn">提交</button> <br>
+         </div>
+      </div>
+    </form>
+    <canvas id="myChart" style="width: 100%; height: auto" padding-left="20px"></canvas>
+    <table id='result' class="table table-striped"></table>
   </div>
-  <div id='content' class='row-fluid'>
-    <div class='span9 main'>
-      <h2>机票雷达</h2>
-      <form class="form-horizontal" action="/flight_query/" method="get">
-        <div class="control-group">
-          <label class="control-label" for="inputLeaveCity">起飞城市:</label>
-           <div class="controls">
-            <input type="text" id="c1" name="c1" placeholder="北京">
-           </div>
-        </div>
-        <div class="control-group">
-          <label class="control-label" for="inputArriveCity">到达城市:</label>
-           <div class="controls">
-            <input type="text" id="c2" name="c2" placeholder="广州">
-           </div>
-        </div>
-        <div class="control-group">
-           <label class="control-label" for="inputLeaveTime">起飞时间:</label>
-           <div class="controls">
-            <input type="text" id="date" name="date" placeholder="格式：2015-09-10">（选填，填入后只返回当天最低票价）
-           </div>
-        </div>
-        <div class="control-group">
-           <div class="controls">
-              <button type="button" id='sum' class="btn">提交</button> <br>
-           </div>
-        </div>
-      </form>
-      <canvas id="myChart" style="width: 100%; height: auto" padding-left="20px"></canvas>
-      <table id='result' class="table table-striped"></table>
-    </div>
-    <div class='span3 sidebar'>
-      <h2>Sidebar</h2>
-      <ul class="nav nav-tabs nav-stacked">
-        <li><a href='#'>Another Link 1</a></li>
-        <li><a href='#'>Another Link 2</a></li>
-        <li><a href='#'>Another Link 3</a></li>
-      </ul>
-    </div>
+  <div class='span3 sidebar'>
+    <h2>Sidebar</h2>
+    <ul class="nav nav-tabs nav-stacked">
+      <li><a href='#'>Another Link 1</a></li>
+      <li><a href='#'>Another Link 2</a></li>
+      <li><a href='#'>Another Link 3</a></li>
+    </ul>
   </div>
 </div>
-
-<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-<script src="/static/js/Chart.js"></script>
 
 <script>
     $(document).ready(function(){
@@ -126,5 +109,4 @@
       });
     });
 </script>
-</body>
-</html>	
+{% endblock %}
