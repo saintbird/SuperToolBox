@@ -2,24 +2,7 @@
 <head>
   <title>Super Tool Box</title>
   <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/css/bootstrap-combined.min.css" rel="stylesheet">
-  <style type='text/css'>
-    body {
-      background-color: #CCC;
-    }
-    #content {
-      background-color: #FFF;
-      border-radius: 5px;
-    }
-    #content .main {
-      padding: 20px;
-    }
-    #content .sidebar {
-      padding: 10px;
-    }
-    #content p {
-      line-height: 30px;
-    }
-  </style>
+  <link rel="stylesheet" href="/static/css/main.css" type="text/css" />
 </head>
 <body>
 <div class='container'>
@@ -36,33 +19,33 @@
   <div id='content' class='row-fluid'>
     <div class='span9 main'>
       <h2>机票雷达</h2>
-        <form class="form-horizontal" action="/flight_query/" method="get">
-          <div class="control-group">
-            <label class="control-label" for="inputLeaveCity">起飞城市:</label>
-             <div class="controls">
-              <input type="text" id="c1" name="c1" placeholder="北京">
-             </div>
-          </div>
-          <div class="control-group">
-            <label class="control-label" for="inputArriveCity">到达城市:</label>
-             <div class="controls">
-              <input type="text" id="c2" name="c2" placeholder="广州">
-             </div>
-          </div>
-          <div class="control-group">
-             <label class="control-label" for="inputLeaveTime">起飞时间:</label>
-             <div class="controls">
-              <input type="text" id="date" name="date" placeholder="格式：2015-09-10">（选填，填入后只返回当天最低票价）
-             </div>
-          </div>
-          <div class="control-group">
-             <div class="controls">
-                <button type="button" id='sum' class="btn">提交</button> <br>
-             </div>
-          </div>
-                    
-          <table id='result' class="table table-striped"></table>
-        </form>  
+      <form class="form-horizontal" action="/flight_query/" method="get">
+        <div class="control-group">
+          <label class="control-label" for="inputLeaveCity">起飞城市:</label>
+           <div class="controls">
+            <input type="text" id="c1" name="c1" placeholder="北京">
+           </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="inputArriveCity">到达城市:</label>
+           <div class="controls">
+            <input type="text" id="c2" name="c2" placeholder="广州">
+           </div>
+        </div>
+        <div class="control-group">
+           <label class="control-label" for="inputLeaveTime">起飞时间:</label>
+           <div class="controls">
+            <input type="text" id="date" name="date" placeholder="格式：2015-09-10">（选填，填入后只返回当天最低票价）
+           </div>
+        </div>
+        <div class="control-group">
+           <div class="controls">
+              <button type="button" id='sum' class="btn">提交</button> <br>
+           </div>
+        </div>
+      </form>
+      <canvas id="myChart" style="width: 100%; height: auto" padding-left="20px"></canvas>
+      <table id='result' class="table table-striped"></table>
     </div>
     <div class='span3 sidebar'>
       <h2>Sidebar</h2>
@@ -76,7 +59,7 @@
 </div>
 
 <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-<script src="/static/js/Chart.Line.js"></script>
+<script src="/static/js/Chart.js"></script>
 
 <script>
     $(document).ready(function(){
@@ -96,17 +79,7 @@
                 alert("请输入到达城市!")
                 return;
             }
-        
-            /*if (date == ""){
-                alert("请输入出发时间!")
-                return;
-            }
-            
-            var re = /^(201[0-9]|202[0-9]|203[0-9])\-(0[1-9]|1[0-2])\-(0[1-9]|1[0-9]|2[0-9]|3[0-1])$/;
-            if(!re.test(date)){
-                alert("您输入的起飞时间格式不正确")
-                return false;
-            }*/
+
             if (date =="") {
                 date = "0"
             }else{
@@ -117,8 +90,38 @@
                 }    
             }
     
-            $.get("/flight_query/",{'c1':c1,'c2':c2,'date':date}, function(ret){
-                $('#result').html(ret);
+            $.getJSON("/flight_query/",{'c1':c1,'c2':c2,'date':date}, function(rows){
+                var htmls = "";
+                var dateList = [];
+                var priceList = [];
+                for(var i=0;i<rows.length;i++){
+                  dateList[i] = rows[i].date;
+                  priceList[i] = rows[i].price;
+                  htmls = htmls+
+                  "<tr><td>" + rows[i].date +
+                  "</td><td>" + rows[i].discount +
+                  "</td><td>" + rows[i].price +
+                  "</td><td>" + rows[i].start + 
+                  "</td><td>" + rows[i].expires + 
+                  "</td></tr>"
+                }
+                
+                var ctx = $("#myChart").get(0).getContext("2d");
+                var chartData = {
+                  labels : dateList,
+                  datasets : [
+                      {
+                          fillColor : "rgba(151,187,205,0.5)",
+                          strokeColor : "rgba(151,187,205,1)",
+                          pointColor : "rgba(151,187,205,1)",
+                          pointStrokeColor : "#fff",
+                          data : priceList
+                      }
+                  ]
+                }
+                new Chart(ctx).Line(chartData);
+                $('#result').html(htmls);
+
         })
       });
     });
