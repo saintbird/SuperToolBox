@@ -18,6 +18,10 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', 'qunar_flight_query.views.index', name='home'),
+    url(r'^flight/$', 'qunar_flight_query.views.index', name='flight'),
     url(r'^flight_query/$', 'qunar_flight_query.views.query', name='flight_query'),
+    
+    url(r'^chart/$', 'chart_tools.views.index', name='chart'),
+    
+    url(r'^loan/$', 'loan.views.index', name='loan'),
 ]

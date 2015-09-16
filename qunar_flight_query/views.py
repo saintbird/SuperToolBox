@@ -13,7 +13,7 @@ sys.setdefaultencoding('utf8')
 
 # Create your views here.
 def index(request):
-    return render(request, 'index.html')
+    return render(request, 'qunar_flight_query/index.html')
 
 def query(request):
     c1 = request.GET["c1"]
