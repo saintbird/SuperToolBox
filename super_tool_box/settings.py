@@ -40,6 +40,7 @@ INSTALLED_APPS = (
 
     'qunar_flight_query',
     'chart_tools',
+    'kindle_clips',
 )
 
 MIDDLEWARE_CLASSES = (

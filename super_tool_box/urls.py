@@ -24,4 +24,6 @@ urlpatterns = [
     url(r'^chart/$', 'chart_tools.views.index', name='chart'),
     
     url(r'^loan/$', 'loan.views.index', name='loan'),
+    
+    url(r'^kindle/$', 'kindle_clips.views.index', name='kindle'),
 ]

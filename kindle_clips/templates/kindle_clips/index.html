@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Kindle笔记整理{% endblock %}
+
+{% block content %}
+<div id='content' class='row-fluid'>
+  <div class='span9 main'>
+    <h2>Kindle笔记整理</h2>
+    <form>
+        <div class="form-group">
+          <label for="forLable">横坐标数据</label>
+          <textarea class="form-control" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+  </div>
+  <div class='span3 sidebar'>
+    <h2>Sidebar</h2>
+    <ul class="nav nav-tabs nav-stacked">
+      <li><a href='#'>Another Link 1</a></li>
+      <li><a href='#'>Another Link 2</a></li>
+      <li><a href='#'>Another Link 3</a></li>
+    </ul>
+  </div>
+</div>
+{% endblock %}
